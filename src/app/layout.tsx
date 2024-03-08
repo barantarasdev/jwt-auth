@@ -1,6 +1,13 @@
 import { ReactNode, memo } from "react"
 import type { Metadata } from "next"
+import { Poppins } from "next/font/google"
 import Layout from "src/components/Layout"
+
+const poppins = Poppins({
+  weight: ["400", "500", "600"],
+  style: ["normal"],
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "title",
@@ -10,7 +17,7 @@ export const metadata: Metadata = {
 function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className={poppins.className}>
         <Layout>{children}</Layout>
       </body>
     </html>
