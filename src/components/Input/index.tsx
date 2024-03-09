@@ -10,7 +10,7 @@ type Props = {
   error?: string
 }
 
-function Input({ placeholder, helperText, register, type, error }: Props) {
+function Input({ placeholder, helperText, register, type = "text", error }: Props) {
   return (
     <Styled.Block>
       <Styled.HelperText id={helperText}>{helperText}</Styled.HelperText>
