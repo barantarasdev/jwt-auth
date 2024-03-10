@@ -12,13 +12,14 @@ function* loginWorker(action: PayloadAction<LoginCreatorT>) {
   const { email, password } = action.payload
 
   try {
-    const { accessToken, refreshToken } = yield call(AuthService.login, {
+    const { accessToken, refreshToken, name } = yield call(AuthService.login, {
       email,
       password,
     })
 
     localStorage.setItem("accessToken", accessToken)
     localStorage.setItem("refreshToken", refreshToken)
+    localStorage.setItem("name", name)
 
     redirect(Routes.HOME)
   } catch (error: any) {
@@ -38,6 +39,7 @@ function* registerWorker(action: PayloadAction<RegisterCreatorT>) {
 
     localStorage.setItem("accessToken", accessToken)
     localStorage.setItem("refreshToken", refreshToken)
+    localStorage.setItem("name", name)
 
     redirect(Routes.HOME)
   } catch (error: any) {
