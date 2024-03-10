@@ -5,11 +5,10 @@ import { call, put, takeLatest } from "redux-saga/effects"
 import { Routes } from "src/types"
 import { AuthCreators, LoginCreatorT, RegisterCreatorT } from "src/store/sagas/authSaga/types"
 import AuthService from "src/services/authSerices"
-import { redirect } from "next/navigation"
 import { setSnackBar } from "src/store/slices/snackbarSlice"
 
 function* loginWorker(action: PayloadAction<LoginCreatorT>) {
-  const { email, password } = action.payload
+  const { email, password, router } = action.payload
 
   try {
     const { accessToken, refreshToken, name } = yield call(AuthService.login, {
@@ -21,14 +20,14 @@ function* loginWorker(action: PayloadAction<LoginCreatorT>) {
     localStorage.setItem("refreshToken", refreshToken)
     localStorage.setItem("name", name)
 
-    redirect(Routes.HOME)
+    router.push(Routes.HOME)
   } catch (error: any) {
     yield put(setSnackBar(error?.response?.data?.message || "ERROR"))
   }
 }
 
 function* registerWorker(action: PayloadAction<RegisterCreatorT>) {
-  const { name, email, password } = action.payload
+  const { name, email, password, router } = action.payload
 
   try {
     const { accessToken, refreshToken } = yield call(AuthService.register, {
@@ -41,7 +40,7 @@ function* registerWorker(action: PayloadAction<RegisterCreatorT>) {
     localStorage.setItem("refreshToken", refreshToken)
     localStorage.setItem("name", name)
 
-    redirect(Routes.HOME)
+    router.push(Routes.HOME)
   } catch (error: any) {
     yield put(setSnackBar(error?.response?.data?.message || "ERROR"))
   }

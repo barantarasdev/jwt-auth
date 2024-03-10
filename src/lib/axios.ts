@@ -1,9 +1,7 @@
 "use client"
 
 import axios, { AxiosError, AxiosResponse } from "axios"
-import { redirect } from "next/navigation"
 import AuthService from "src/services/authSerices"
-import { Routes } from "src/types"
 
 const options = {
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -49,7 +47,6 @@ instance.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken")
 
         await AuthService.logout(refreshToken as string)
-        redirect(Routes.LOGIN)
       }
     }
     return Promise.reject(error)
@@ -72,6 +69,5 @@ refreshInstance.interceptors.response.use(
     const refreshToken = localStorage.getItem("refreshToken")
 
     await AuthService.logout(refreshToken as string)
-    redirect(Routes.LOGIN)
   }
 )
