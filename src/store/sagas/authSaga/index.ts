@@ -3,9 +3,15 @@
 import { PayloadAction } from "@reduxjs/toolkit"
 import { call, put, takeLatest } from "redux-saga/effects"
 import { Routes } from "src/types"
-import { AuthCreators, LoginCreatorT, RegisterCreatorT } from "src/store/sagas/authSaga/types"
+import {
+  AuthCreators,
+  LoginCreatorT,
+  LogoutCreatorT,
+  RegisterCreatorT,
+} from "src/store/sagas/authSaga/types"
 import AuthService from "src/services/authSerices"
 import { setSnackBar } from "src/store/slices/snackbarSlice"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 
 function* loginWorker(action: PayloadAction<LoginCreatorT>) {
   const { email, password, router } = action.payload
@@ -46,9 +52,24 @@ function* registerWorker(action: PayloadAction<RegisterCreatorT>) {
   }
 }
 
+function* logoutWorker(action: PayloadAction<LogoutCreatorT>) {
+  const refreshToken = localStorage.getItem("refreshToken")
+
+  if (refreshToken) {
+    yield call(AuthService.logout, refreshToken as string)
+
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("name")
+  }
+
+  action.payload.router.push(Routes.LOGIN)
+}
+
 function* authWatcher() {
   yield takeLatest(AuthCreators.ASYNC_LOGIN, loginWorker)
   yield takeLatest(AuthCreators.ASYNC_REGISTER, registerWorker)
+  yield takeLatest(AuthCreators.ASYNC_LOGOUT, logoutWorker)
 }
 
 export default authWatcher

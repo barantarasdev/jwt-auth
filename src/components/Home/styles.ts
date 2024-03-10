@@ -1,7 +1,16 @@
 "use client"
 
-import { styled } from "@mui/material"
+import { styled, Button as MUIButton } from "@mui/material"
 
 export const Section = styled("section")(({ theme: { mixins } }) => ({
-  ...mixins.positionCenter,
+  width: "100%",
+  height: "100vh",
+  ...mixins.flexCenter,
+  position: "relative",
 }))
+
+export const Button = styled(MUIButton)({
+  position: "absolute",
+  top: 30,
+  right: 30,
+})
