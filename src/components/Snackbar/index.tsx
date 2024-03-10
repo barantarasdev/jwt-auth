@@ -9,7 +9,7 @@ function Snackbar() {
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       open={isOpen}
       onClose={onClose}
-      autoHideDuration={3000}
+      autoHideDuration={2000}
       TransitionComponent={Slide}
     >
       <Alert onClose={onClose} severity="error" variant="filled">
