@@ -1,11 +1,12 @@
 "use client"
 
 import { PayloadAction } from "@reduxjs/toolkit"
-import { call, takeLatest } from "redux-saga/effects"
+import { call, put, takeLatest } from "redux-saga/effects"
 import { Routes } from "src/types"
 import { AuthCreators, LoginCreatorT, RegisterCreatorT } from "src/store/sagas/authSaga/types"
 import AuthService from "src/services/authSerices"
 import { redirect } from "next/navigation"
+import { setSnackBar } from "src/store/slices/snackbarSlice"
 
 function* loginWorker(action: PayloadAction<LoginCreatorT>) {
   const { email, password } = action.payload
@@ -21,7 +22,7 @@ function* loginWorker(action: PayloadAction<LoginCreatorT>) {
 
     redirect(Routes.HOME)
   } catch (error: any) {
-    console.log(error?.response?.data?.message || "ERROR")
+    yield put(setSnackBar(error?.response?.data?.message || "ERROR"))
   }
 }
 
@@ -40,7 +41,7 @@ function* registerWorker(action: PayloadAction<RegisterCreatorT>) {
 
     redirect(Routes.HOME)
   } catch (error: any) {
-    console.log(error?.response?.data?.message || "ERROR")
+    yield put(setSnackBar(error?.response?.data?.message || "ERROR"))
   }
 }
 
